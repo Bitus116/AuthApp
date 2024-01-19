@@ -3,10 +3,11 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:AuthApp.UI"
+        xmlns:vm="clr-namespace:AuthApp.UI.ViewModel"
+        d:DataContext="{d:DesignInstance Type=vm:MainWindowViewModel}"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
-
+        Title="AUTH APP" Height="720" Width="1280" MinHeight="650" MinWidth="450">
+    <Grid Background="#f2f2f2">
+        <UserControl Content="{Binding CurrentViewModel}" HorizontalAlignment="Center" VerticalAlignment="Center"></UserControl>
     </Grid>
 </Window>
