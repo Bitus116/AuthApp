@@ -32,28 +32,38 @@ namespace AuthApp.Domain.Services
             return true;
         }
 
-        public async Task<User> SignUp(string username, string password, string confirmPassword)
+        public async Task<SignUpResult> SignUp(string username, string password, string confirmPassword)
         {
+            var result = SignUpResult.Success;
             if(password != confirmPassword)
             {
-                throw new ArgumentException("Passwords did not match");
+                result = SignUpResult.PasswordsDoNotMatch;
             }
 
             var user = await _userDataService.GetByLogin(username);
 
             if (user != null) 
             {
-                throw new ArgumentException($"{username} alrady exists");
+                result = SignUpResult.UsernameAlreadyExists;
             }
 
-            var passwordHash = _passwordHasher.HashPassword(password);
-            User entity = new User()
+            if (result == SignUpResult.Success)
             {
-                Login = username,
-                PasswordHash = passwordHash
-            };
-            await _userDataService.Create(entity);
-            return entity;
+                var passwordHash = _passwordHasher.HashPassword(password);
+                User entity = new User()
+                {
+                    Login = username,
+                    PasswordHash = passwordHash
+                };
+                await _userDataService.Create(entity);
+            }
+            return result;
         }
+    }
+    public enum SignUpResult
+    {
+        Success,
+        PasswordsDoNotMatch,
+        UsernameAlreadyExists
     }
 }

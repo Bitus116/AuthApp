@@ -9,21 +9,38 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
 namespace AuthApp.UI.ViewModel
 {
-    public class LogInViewModel : ObservableValidator
+    public class LogInViewModel : BaseViewModel
     {
+        public string Login {get; set;}
+        public string Password {get; set;}
         public ICommand LogInCommand { get; }
         public ICommand SignUpCommand { get; }
-        private readonly IUserDataService userDataService;
-        public LogInViewModel(IUserDataService userDataService)
+        private readonly IAuthService _authService;
+        public LogInViewModel(IAuthService authService)
         {
-            this.userDataService = userDataService;
-            LogInCommand = new RelayCommand(()=> userDataService.Get(1));
+            _authService = authService;
+            LogInCommand = new RelayCommand(LogIn);
             SignUpCommand = new RelayCommand(() => WeakReferenceMessenger.Default.Send(new NavigationMessage(typeof(SignUpViewModel))));
         }
-        
+        private async void LogIn()
+        {
+            try
+            {
+               if( await _authService.LogIn(Login, Password))
+               {
+                    MessageBox.Show("Sucess!");
+                    RemoveErrors(nameof(Password));
+               }   
+            }
+            catch (ArgumentException)
+            {
+                AddError(nameof(Password), "Введены неверные данные");
+            }
+        }
     }
 }

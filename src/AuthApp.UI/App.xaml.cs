@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using AuthApp.Domain.Services.Interfaces;
 using AuthApp.DataAccess.Sevices;
+using AuthApp.Domain.Services;
+using Microsoft.AspNet.Identity;
 
 namespace AuthApp.UI
 {
@@ -43,14 +45,18 @@ namespace AuthApp.UI
             var services = new ServiceCollection();
 
             //DB
-            Action<DbContextOptionsBuilder> configureDbContext = o => o.UseSqlite("Data Source=test.db");
+            Action<DbContextOptionsBuilder> configureDbContext = o => o.UseNpgsql("connecton string"); //Да, оно должно быть в кофигурации
             services.AddSingleton(new DbContextFactory(configureDbContext));
             services.AddSingleton<IUserDataService, UserDataService>();
+
+            //Services
+            services.AddSingleton<IAuthService, AuthService>();
+            services.AddSingleton<IPasswordHasher, PasswordHasher>();
 
             //ViewModels
             services.AddSingleton<MainWindowViewModel>();
             services.AddSingleton<LogInViewModel>();
-            services.AddSingleton<SignUpViewModel>();
+            services.AddTransient<SignUpViewModel>();
 
             return services.BuildServiceProvider();
 

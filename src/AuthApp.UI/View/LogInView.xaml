@@ -6,6 +6,7 @@
              xmlns:vm="clr-namespace:AuthApp.UI.ViewModel"
              d:DataContext="{d:DesignInstance Type=vm:LogInViewModel}"
              mc:Ignorable="d" 
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              d:DesignHeight="400" d:DesignWidth="400"
              Height="400" Width=" 400">
     <Grid Background="White">
@@ -21,23 +22,29 @@
         <Label Grid.Row="0" Content="LOG IN" HorizontalAlignment="Center" 
                VerticalAlignment="Center" FontSize="40"></Label>
         <StackPanel Grid.Row="1" Margin="10">
-            <Label Content="Login"></Label>
-            <TextBox x:Name="loginTextBox" Height="35" VerticalContentAlignment="Center"></TextBox>
-            <TextBlock Foreground="Red"
-                       Text="{Binding (Validation.Errors)[0].ErrorContent,
-                              ElementName=loginTextBox}" FontSize="10"/>
+            <TextBox
+               Margin="0 16 0 0"
+               materialDesign:HintAssist.Hint="Логин"
+               materialDesign:HintAssist.Background="White"
+               FontSize="16"
+               Style="{StaticResource MaterialDesignOutlinedTextBox}"
+               Text="{Binding Login, ValidatesOnDataErrors=True}">
+            </TextBox>
         </StackPanel>
         <StackPanel Grid.Row="2" Margin="10">
-            <Label Content="Password"></Label>
-            <PasswordBox x:Name="passwordTextBox" Height="35"
-                         VerticalContentAlignment="Center"></PasswordBox>
-            <TextBlock Foreground="Red"
-                       Text="{Binding (Validation.Errors)[0].ErrorContent,
-                              ElementName=passwordTextBox}" FontSize="10"/>
+            <PasswordBox
+                    Margin="0 16 0 0"
+                    materialDesign:HintAssist.Hint="Пароль"
+                    materialDesign:HintAssist.Background="White"
+                    FontSize="16"
+                    Style="{StaticResource MaterialDesignOutlinedRevealPasswordBox}"
+                    materialDesign:PasswordBoxAssist.Password="{Binding Password, ValidatesOnNotifyDataErrors=True}"
+                    materialDesign:ValidationAssist.Background="Transparent"
+                    materialDesign:ValidationAssist.FontSize="12"/>
         </StackPanel>
         <StackPanel Grid.Row="3" Margin="10">
             <Button Height="50" Content="Log In" Background="#3775d3" Command="{Binding LogInCommand}"></Button>
-            <Button Height="20" Content="Sign Up" Background="Transparent"
+            <Button Height="30" Content="Sign Up" Background="Transparent"
                     BorderBrush="Transparent" Margin="0 10 0 0" Command="{Binding SignUpCommand}"></Button>
         </StackPanel>
     </Grid>

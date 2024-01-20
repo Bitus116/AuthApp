@@ -11,6 +11,6 @@ namespace AuthApp.Domain.Services.Interfaces
     {
         Task<bool> LogIn(string login, string password);
 
-        Task<User> SignUp(string username, string password, string confirmPassword);
+        Task<SignUpResult> SignUp(string username, string password, string confirmPassword);
     }
 }
